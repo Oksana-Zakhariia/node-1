@@ -1,4 +1,4 @@
-const { createFile } = require("./files");
+const { createFile, getFiles, getFile } = require("./files");
 const argv = require("yargs").argv;
 
 function invokeAction({ action, fileName, content }) {
@@ -8,11 +8,11 @@ function invokeAction({ action, fileName, content }) {
       break;
 
     case "get":
-      // ... id
+      getFiles()
       break;
 
     case "find":
-      // ... name email phone
+      getFile(fileName)
       break;
 
     default:
