@@ -29,6 +29,48 @@ function createFile(fileName, content) {
     .then(() => console.log(chalk.blue(`File was sucessfully created`)))
     .catch((error) => console.log(error));
 }
+
+function getFiles() {
+  fs.readdir(path.join(__dirname, "./files"))
+    .then((data) => {
+      if (!data.length) {
+        console.log(chalk.red("Not files is this directiry "));
+      }
+      return console.log(data);
+    })
+    .catch((err) => console.log(err));
+}
+
+function getFile(fileName) {
+  let objInfo = {};
+  fs.readdir(path.join(__dirname, "./files"))
+    .then((data) => {
+      if (!data.includes(fileName)) {
+        console.log(chalk.red(`File with name ${fileName} not found`));
+        return;
+      }
+      fs.readFile(path.join(__dirname, "./files", fileName), "utf-8")
+        .then((data) => {
+          objInfo = {
+            fileName: path.basename(path.join(__dirname, "./files", fileName)),
+            extention: path.extname(path.join(__dirname, "./files", fileName)),
+            content: data,
+          };
+        })
+        .then(() => fs.stat(path.join(__dirname, "./files", fileName)))
+        .then((stats) =>
+          console.log({
+            ...objInfo,
+            size: stats.size,
+            date: stats.birthtime.toString(),
+          })
+        );
+    })
+    .catch((err) => console.log(err));
+}
+
 module.exports = {
   createFile,
+  getFiles,
+  getFile,
 };
